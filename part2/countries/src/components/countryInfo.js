@@ -7,8 +7,6 @@ const CountryInfo = ({countries, filter}) => {
 
   const key = process.env.REACT_APP_API_KEY
 
-  console.log(weather)
-
   useEffect(() => {
     setCountry(null)
   }, [filter])
@@ -17,13 +15,11 @@ const CountryInfo = ({countries, filter}) => {
     setCountry(c)
     axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${c.latlng[0]}&lon=${c.latlng[1]}&units=metric&appid=${key}`)
         .then(response => {
-            console.log(response.data)
             setWeather(response.data)
         })
   }
 
   let filtered = countries.filter(c => c.name.common.toLowerCase().includes(filter.toLowerCase()))
-  console.log(filtered)
   if (filtered.length > 10) {
     return (
         <p>Too many matches, specify another filter</p>
