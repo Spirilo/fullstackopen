@@ -3,15 +3,14 @@ import Filter from './components/filter'
 import PersonForm from './components/personForm'
 import Persons from './components/persons'
 import personService from './services/personService'
-import { isLabelWithInternallyDisabledControl } from '@testing-library/user-event/dist/utils'
+import Notification from './components/notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-
-  console.log(persons)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personService.getAll()
@@ -40,14 +39,29 @@ const App = () => {
       let p = persons.find(p => p.name === person.name)
       if (window.confirm(`${p.name} is already added, replace the number?`)) {
         personService.update(p.id, person)
-          .then(p => console.log(p))
-      }
+          .then(p => {
+            setErrorMessage(`${p.name} was updated!`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+          })
+          .catch(error => {
+            setErrorMessage(`Information of ${p.name} was already deleted!`)
+            setTimeout(() => {
+              setErrorMessage(null)
+              window.location.reload()
+            }, 5000);
+          })
+        }
     } else {
       personService.create(person)
         .then(person => {
-          console.log(person)
           setPersons(persons.concat(person))
         })
+        setErrorMessage(`${person.name} was added!`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
     }
     setNewName('')
     setNewNumber('')
@@ -59,12 +73,17 @@ const App = () => {
       personService.dlt(id)
         .then(x => console.log("Poistettiin tietokannasta"))
       setPersons(persons.filter(p => p.id !== id))
+      setErrorMessage(`${p.name} was deleted!`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter filter={filter} handleChange={ev => changeFilter(ev.target.value)}/>
       <h2>Add a new</h2>
       <PersonForm name={newName} number={newNumber} nameChange={ev => changeName(ev.target.value)}
