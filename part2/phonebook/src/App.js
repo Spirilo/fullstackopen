@@ -54,14 +54,22 @@ const App = () => {
           })
         }
     } else {
-      personService.create(person)
+      personService
+        .create(person)
         .then(person => {
           setPersons(persons.concat(person))
-        })
-        setErrorMessage(`${person.name} was added!`)
-        setTimeout(() => {
-          setErrorMessage(null)
+          setErrorMessage(`${person.name} was added!`)
+          setTimeout(() => {
+            setErrorMessage(null)
         }, 5000)
+        })
+        .catch(error => {
+          console.log(error.response.data.error)
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
     setNewName('')
     setNewNumber('')
