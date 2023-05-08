@@ -17,9 +17,9 @@ const favoriteBlog = (blogs) => {
   }
   blogs.forEach(blog => {
     if (blog.likes > obj.likes) {
-        obj.title = blog.title
-        obj.author = blog.author
-        obj.likes = blog.likes
+      obj.title = blog.title
+      obj.author = blog.author
+      obj.likes = blog.likes
     }
   })
   return obj

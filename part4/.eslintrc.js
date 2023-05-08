@@ -5,7 +5,6 @@ module.exports = {
     'es2021': true,
     'node': true,
     'jest': true,
-    'lodash': true
   },
   'extends': 'eslint:recommended',
   'overrides': [
