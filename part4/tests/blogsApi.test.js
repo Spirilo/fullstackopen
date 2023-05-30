@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
+
 const Blog = require('../models/blog')
 
 const initialBlogs = [
@@ -45,6 +46,18 @@ describe('GET-tests', () => {
   })
 })
 describe('POST-tests', () => {
+
+  let token = null;
+  beforeAll(async () => {
+    await User.deleteMany({});
+
+    const passwordHash = await bcrypt.hash("12345", 10);
+    const user = await new User({ username: "name", passwordHash }).save();
+
+    const userForToken = { username: "name", id: user.id };
+    return (token = jwt.sign(userForToken, config.SECRET));
+  });
+
   test('post works and blog is saved in right format', async () => {
     const newBlog = {
       title: 'Type wars',
