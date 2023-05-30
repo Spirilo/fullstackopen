@@ -54,8 +54,21 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+  const blog = await Blog.findById(request.params.id)
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  const user = await User.findById(decodedToken.id)
+
+  if (!blog) {
+    response.status(404).json({error: 'no blog found with id'}).end()
+  } else if (blog.user.toString() === user.id) {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  } else {
+    response.status(401).json({error: 'login to blog owner to delete blog'})
+  }
+
+  //await Blog.findByIdAndRemove(request.params.id)
+  //response.status(204).end()
 })
 
 module.exports = blogsRouter
