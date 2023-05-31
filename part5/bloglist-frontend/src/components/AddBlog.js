@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 import Notification from "./Notification"
 
 
-const AddBlog = ({onChange}) => {
+const AddBlog = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -20,7 +20,6 @@ const AddBlog = ({onChange}) => {
       setTimeout(() => {
         setMsg(null)
       }, 5000)
-      window.location.reload(false)
     } catch (error) {
       setMsg('error adding a new blog')
       setTimeout(() => {

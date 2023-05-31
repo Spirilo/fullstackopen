@@ -52,10 +52,6 @@ const App = () => {
 
   }
 
-  const changeError = msg => {
-    console.log(msg)
-  }
-
   return (
     <div>
       {!user &&
@@ -76,18 +72,16 @@ const App = () => {
       </form>
     </>
     }
-      {user && 
-        <>
+    {user && 
+      <>
         <h4>logged in as {user.username} <button onClick={handleLogout}>logout</button> </h4>
-        <AddBlog onChange={changeError} />
-        <Notification message={errorMsg} color='green' />
+        <AddBlog/>
         <h2>blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        
+          <Blog key={blog.id} blog={blog} /> 
         )}
-        </>
-      }
+      </>
+    }
     </div>
   )
 }
