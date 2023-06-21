@@ -60,11 +60,11 @@ const App = () => {
   const addBlog = async (blog) => {
     try {
       const added = await blogService.create(blog)
-      setBlogs(blogs.concat(added))
+      setBlogs(await blogService.getAll())
       setMsg(`a new blog ${added.title} by ${added.author} was added!`)
       setTimeout(() => {
         setMsg(null)
-      }, 1000)
+      }, 5000)
     } catch (error) {
       setMsg('error adding a new blog')
       setTimeout(() => {
@@ -96,6 +96,7 @@ const App = () => {
     {user && 
       <>
         <h4>logged in as {user.username} <button onClick={handleLogout}>logout</button> </h4>
+        <Notification message={msg} color='red' />
         <Togglable buttonLabel='add blog' ref={blogRef}>
           <BlogForm 
             toggle={() => blogRef.current.toggleVisibility()}
