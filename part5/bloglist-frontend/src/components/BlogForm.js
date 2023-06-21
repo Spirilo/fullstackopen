@@ -1,38 +1,27 @@
 import { useState } from "react"
-import blogService from '../services/blogs'
-import Notification from "./Notification"
 
-
-const AddBlog = ({toggle}) => {
+const BlogForm = ({toggle, createBlog}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const [msg, setMsg] = useState(null)
   
 
 
   const addBlog = async ev => {
     ev.preventDefault()
-    const blog = {title, author, url}
-    try {
-      const added = await blogService.create(blog)
-      setMsg(`a new blog ${title} by ${author} was added!`)
-      setTimeout(() => {
-        setMsg(null)
-        toggle()
-      }, 1000)
-    } catch (error) {
-      setMsg('error adding a new blog')
-      setTimeout(() => {
-        setMsg(null)
-      }, 5000)
-    }
-    
+    createBlog({
+      title,
+      author,
+      url
+    })
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    toggle()
   }
   
   return (
     <div>
-      <Notification message={msg} color='orange' />
       <h3>create new</h3>
       <form onSubmit={addBlog}>
         <div>
@@ -65,4 +54,4 @@ const AddBlog = ({toggle}) => {
   )
 }
 
-export default AddBlog
+export default BlogForm

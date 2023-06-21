@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import AddBlog from './components/AddBlog'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
@@ -11,7 +11,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errorMsg, setErrorMsg] = useState(null)
+  const [msg, setMsg] = useState(null)
 
   const blogRef = useRef()
   console.log(blogs)
@@ -45,9 +45,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (error) {
-      setErrorMsg('bad credentials')
+      setMsg('bad credentials')
       setTimeout(() => {
-        setErrorMsg(null)
+        setMsg(null)
       }, 5000)  
     }
   }
@@ -55,16 +55,31 @@ const App = () => {
   const handleLogout = () => {
     setUser(null)
     window.localStorage.clear()
+  }
 
+  const addBlog = async (blog) => {
+    try {
+      const added = await blogService.create(blog)
+      setBlogs(blogs.concat(added))
+      setMsg(`a new blog ${added.title} by ${added.author} was added!`)
+      setTimeout(() => {
+        setMsg(null)
+      }, 1000)
+    } catch (error) {
+      setMsg('error adding a new blog')
+      setTimeout(() => {
+        setMsg(null)
+      }, 5000)
+    }
   }
 
   return (
     <div>
       {!user &&
       <>
-      <Notification message={errorMsg} color='red' />
+      <Notification message={msg} color='red' />
       <h2>log in to application</h2>
-      <p>{errorMsg}</p>
+      <p>{msg}</p>
       <form onSubmit={handleLogin}>
         <div>
         username
@@ -82,7 +97,10 @@ const App = () => {
       <>
         <h4>logged in as {user.username} <button onClick={handleLogout}>logout</button> </h4>
         <Togglable buttonLabel='add blog' ref={blogRef}>
-          <AddBlog toggle={() => blogRef.current.toggleVisibility()} />
+          <BlogForm 
+            toggle={() => blogRef.current.toggleVisibility()}
+            createBlog={addBlog}
+          />
         </Togglable>
         <h2>blogs</h2>
         {blogs.map(blog =>
