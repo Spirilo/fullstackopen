@@ -14,12 +14,15 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState(null)
 
   const blogRef = useRef()
+  console.log(blogs)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
   }, [])
+
+
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedUser')
     if (loggedUser) {
