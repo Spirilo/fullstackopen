@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Blog = ({blog, addLike, removeBlog}) => {
+const Blog = ({ blog, addLike, removeBlog }) => {
   const [showInfo, setShowInfo] = useState(false)
 
   console.log(showInfo)
@@ -35,7 +35,7 @@ const Blog = ({blog, addLike, removeBlog}) => {
           {blog.title} {blog.author} <button onClick={() => setShowInfo(!showInfo)}>view</button>
         </div>
       }
-      {showInfo && 
+      {showInfo &&
         <div>
           {blog.title} {blog.author} <button onClick={() => setShowInfo(!showInfo)}>hide</button>
           <p>{blog.url}</p>
@@ -46,7 +46,7 @@ const Blog = ({blog, addLike, removeBlog}) => {
           }
         </div>
       }
-    </div>  
+    </div>
   )
 }
 

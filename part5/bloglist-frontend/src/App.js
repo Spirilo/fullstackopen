@@ -37,7 +37,7 @@ const App = () => {
   const handleLogin = async (ev) => {
     ev.preventDefault()
 
-    const credentials = {username, password}
+    const credentials = { username, password }
     console.log(credentials)
     try {
       const user = await loginService.login(credentials)
@@ -50,10 +50,10 @@ const App = () => {
       setMsg('bad credentials')
       setTimeout(() => {
         setMsg(null)
-      }, 5000)  
+      }, 5000)
     }
   }
-  
+
   const handleLogout = () => {
     setUser(null)
     window.localStorage.clear()
@@ -87,43 +87,43 @@ const App = () => {
     <div>
       {!user &&
       <>
-      <Notification message={msg} />
-      <h2>log in to application</h2>
-      <p>{msg}</p>
-      <form onSubmit={handleLogin}>
-        <div>
+        <Notification message={msg} />
+        <h2>log in to application</h2>
+        <p>{msg}</p>
+        <form onSubmit={handleLogin}>
+          <div>
         username
-        <input type="text" value={username} onChange={ev => setUsername(ev.target.value)} />
-        </div>
-        <div>
+            <input type="text" value={username} onChange={ev => setUsername(ev.target.value)} />
+          </div>
+          <div>
         password
-        <input type="password" value={password} onChange={ev => setPassword(ev.target.value)} />
-        </div>
-        <button type="submit">login</button> 
-      </form>
-    </>
-    }
-    {user && 
+            <input type="password" value={password} onChange={ev => setPassword(ev.target.value)} />
+          </div>
+          <button type="submit">login</button>
+        </form>
+      </>
+      }
+      {user &&
       <>
         <h4>logged in as {user.username} <button onClick={handleLogout}>logout</button> </h4>
         <Notification message={msg} />
         <Togglable buttonLabel='add blog' ref={blogRef}>
-          <BlogForm 
+          <BlogForm
             toggle={() => blogRef.current.toggleVisibility()}
             createBlog={addBlog}
           />
         </Togglable>
         <h2>blogs</h2>
         {blogs.map(blog =>
-          <Blog 
-            key={blog.id} 
+          <Blog
+            key={blog.id}
             blog={blog}
             addLike={addLike}
-            removeBlog={removeBlog} 
-          /> 
+            removeBlog={removeBlog}
+          />
         )}
       </>
-    }
+      }
     </div>
   )
 }
