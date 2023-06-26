@@ -76,9 +76,11 @@ const App = () => {
   }
 
   const addLike = async (id, blog) => {
-    console.log(id, blog)
-    const updated = await blogService.save(id, blog)
-    console.log(updated)
+    await blogService.save(id, blog)
+  }
+
+  const removeBlog = async id => {
+    await blogService.dlt(id)
   }
 
   return (
@@ -116,7 +118,8 @@ const App = () => {
           <Blog 
             key={blog.id} 
             blog={blog}
-            addLike={addLike} 
+            addLike={addLike}
+            removeBlog={removeBlog} 
           /> 
         )}
       </>

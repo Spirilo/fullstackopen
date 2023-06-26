@@ -35,7 +35,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
-  console.log(body)
+
   if (!body) return response.status(404).end()
   let updatedBlog = {
     title: body.title,
@@ -46,7 +46,7 @@ blogsRouter.put('/:id', async (request, response) => {
   }
 
   const updated = await Blog.findByIdAndUpdate(request.params.id, updatedBlog, {new: true})
-  const all = await Blog.find({})
+
   response.json(updated)
 
 })
