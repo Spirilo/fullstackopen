@@ -34,18 +34,20 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 })
 
 blogsRouter.put('/:id', async (request, response) => {
-  const body = await Blog.findById(request.params.id)
+  const body = request.body
+  console.log(body)
   if (!body) return response.status(404).end()
   let updatedBlog = {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes
+    likes: body.likes,
+    user: body.user.id
   }
-  await Blog.findByIdAndUpdate(request.params.id, updatedBlog)
+
+  const updated = await Blog.findByIdAndUpdate(request.params.id, updatedBlog, {new: true})
   const all = await Blog.find({})
-  console.log(all)
-  response.status(204).end()
+  response.json(updated)
 
 })
 

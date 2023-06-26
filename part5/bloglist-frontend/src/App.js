@@ -14,12 +14,14 @@ const App = () => {
   const [msg, setMsg] = useState(null)
 
   const blogRef = useRef()
-  console.log(blogs)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    const getData = async () => {
+      const data = await blogService.getAll()
+      const sorted = data.sort((a,b) => b.likes - a.likes)
+      setBlogs(sorted)
+    }
+    getData()
   }, [])
 
 
@@ -57,7 +59,7 @@ const App = () => {
     window.localStorage.clear()
   }
 
-  const addBlog = async (blog) => {
+  const addBlog = async blog => {
     try {
       const added = await blogService.create(blog)
       setBlogs(await blogService.getAll())
@@ -73,11 +75,17 @@ const App = () => {
     }
   }
 
+  const addLike = async (id, blog) => {
+    console.log(id, blog)
+    const updated = await blogService.save(id, blog)
+    console.log(updated)
+  }
+
   return (
     <div>
       {!user &&
       <>
-      <Notification message={msg} color='red' />
+      <Notification message={msg} />
       <h2>log in to application</h2>
       <p>{msg}</p>
       <form onSubmit={handleLogin}>
@@ -96,7 +104,7 @@ const App = () => {
     {user && 
       <>
         <h4>logged in as {user.username} <button onClick={handleLogout}>logout</button> </h4>
-        <Notification message={msg} color='red' />
+        <Notification message={msg} />
         <Togglable buttonLabel='add blog' ref={blogRef}>
           <BlogForm 
             toggle={() => blogRef.current.toggleVisibility()}
@@ -105,7 +113,11 @@ const App = () => {
         </Togglable>
         <h2>blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} /> 
+          <Blog 
+            key={blog.id} 
+            blog={blog}
+            addLike={addLike} 
+          /> 
         )}
       </>
     }
