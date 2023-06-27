@@ -1,12 +1,7 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, addLike, removeBlog }) => {
+const Blog = ({ blog, addLike, removeBlog, user }) => {
   const [showInfo, setShowInfo] = useState(false)
-
-  console.log(showInfo)
-  const userJson = window.localStorage.getItem('loggedUser')
-  const user = JSON.parse(userJson)
-  console.log(user)
 
   const like = () => {
     const updatedBlog = {
@@ -29,21 +24,21 @@ const Blog = ({ blog, addLike, removeBlog }) => {
   }
 
   return(
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {!showInfo &&
         <div>
           {blog.title} {blog.author} <button onClick={() => setShowInfo(!showInfo)}>view</button>
         </div>
       }
       {showInfo &&
-        <div>
+        <div className='blog-all'>
           {blog.title} {blog.author} <button onClick={() => setShowInfo(!showInfo)}>hide</button>
           <p>{blog.url}</p>
           <p>likes {blog.likes} <button onClick={like}>like</button></p>
           <p>{blog.user.username}</p>
-          {blog.user.username === user.username &&
-          <button onClick={remove}>remove</button>
-          }
+          {blog.user.id === user ?
+            <button onClick={remove}>remove</button>
+            : ''}
         </div>
       }
     </div>

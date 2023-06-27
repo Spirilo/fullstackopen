@@ -120,6 +120,7 @@ const App = () => {
             blog={blog}
             addLike={addLike}
             removeBlog={removeBlog}
+            user={user.id}
           />
         )}
       </>

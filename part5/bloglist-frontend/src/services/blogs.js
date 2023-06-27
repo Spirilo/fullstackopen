@@ -37,5 +37,5 @@ const dlt = async id => {
   return response.data
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
+
 export default { getAll, create, setToken, save, dlt }
