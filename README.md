@@ -1,2 +1,2 @@
-# fullstackopen
+# Fullstackopen
 Full Stack Open
