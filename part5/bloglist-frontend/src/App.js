@@ -93,14 +93,22 @@ const App = () => {
         <p>{msg}</p>
         <form onSubmit={handleLogin}>
           <div>
-        username
-            <input type="text" value={username} onChange={ev => setUsername(ev.target.value)} />
+            username
+            <input
+              id='username'
+              type="text"
+              value={username}
+              onChange={ev => setUsername(ev.target.value)} />
           </div>
           <div>
-        password
-            <input type="password" value={password} onChange={ev => setPassword(ev.target.value)} />
+            password
+            <input
+              id='password'
+              type="password"
+              value={password}
+              onChange={ev => setPassword(ev.target.value)} />
           </div>
-          <button type="submit">login</button>
+          <button id='login-button' type="submit">login</button>
         </form>
       </>
       }
@@ -108,7 +116,7 @@ const App = () => {
       <>
         <h4>logged in as {user.username} <button onClick={handleLogout}>logout</button> </h4>
         <Notification message={msg} />
-        <Togglable buttonLabel='add blog' ref={blogRef}>
+        <Togglable buttonLabel='new blog' ref={blogRef}>
           <BlogForm
             createBlog={addBlog}
           />
