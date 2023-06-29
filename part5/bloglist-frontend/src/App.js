@@ -14,6 +14,7 @@ const App = () => {
   const [msg, setMsg] = useState(null)
 
   const blogRef = useRef()
+  console.log(user)
 
   useEffect(() => {
     const getData = async () => {
@@ -77,11 +78,13 @@ const App = () => {
   }
 
   const addLike = async (id, blog) => {
-    await blogService.save(id, blog)
+    const res = await blogService.save(id, blog)
+    setBlogs(blogs.map(blog => blog !== res ? blog : res))
   }
 
   const removeBlog = async id => {
     await blogService.dlt(id)
+    setBlogs(blogs.filter(blog => blog.id !== id))
   }
 
   return (
@@ -128,7 +131,7 @@ const App = () => {
             blog={blog}
             addLike={addLike}
             removeBlog={removeBlog}
-            user={user.id}
+            user={user.username}
           />
         )}
       </>

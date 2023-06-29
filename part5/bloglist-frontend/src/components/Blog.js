@@ -3,6 +3,7 @@ import { useState } from 'react'
 const Blog = ({ blog, addLike, removeBlog, user }) => {
   const [showInfo, setShowInfo] = useState(false)
 
+  console.log(user)
   const toggle = () => {
     setShowInfo(!showInfo)
   }
@@ -40,7 +41,7 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
           <p>{blog.url}</p>
           <p>likes {blog.likes} <button onClick={like}>like</button></p>
           <p>{blog.user.username}</p>
-          {blog.user.id === user ?
+          {blog.user.username === user ?
             <button onClick={remove}>remove</button>
             : ''}
         </div>
