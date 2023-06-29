@@ -41,7 +41,7 @@ describe('Blog app', function() {
     describe('When logged in', function() {
       beforeEach(function() {
         cy.login({ username: 'tester', password: 'secret'})
-        cy.createBlog({ title: 'Test blog', author: 'cypress', url: 'cypress.com'})
+        cy.createBlog({ title: 'Test blog', author: 'cypress', url: 'cypress.com', likes: 10})
       })
 
       it('a blog can be created', function() {
@@ -66,11 +66,31 @@ describe('Blog app', function() {
         cy.contains('remove').click()
       })
 
-      it.only('only blog creator can see remove button', function() {
+      it('only blog creator can see remove button', function() {
         cy.contains('logout').click()
         cy.login({ username: 'cypress', password: 'tester'})
         cy.contains('view').click()
         cy.contains('remove').should('not.exist')
+      })
+
+      it('blogs are sorted from most likes to least', function () {
+        cy.createBlog({ title: 'Other blog', author: 'Tester', url: 'react.com', likes: 8 })
+        cy.createBlog({ title: 'Some blog', author: 'cypress', url: 'java.com', likes: 7 })
+        cy.createBlog({ title: 'Last blog', author: 'Tester', url: 'js.com', likes: 22 })
+
+        cy.get('.blog').eq(0).should('contain', 'Last blog')
+        cy.get('.blog').eq(1).should('contain', 'Test blog')
+        cy.get('.blog').eq(2).should('contain', 'Other blog')
+        cy.get('.blog').eq(3).should('contain', 'Some blog')
+
+        cy.contains('Some blog').contains('view').click()
+        cy.contains('like').click()
+        cy.contains('like').click()
+
+        cy.get('.blog').eq(0).should('contain', 'Last blog')
+        cy.get('.blog').eq(1).should('contain', 'Test blog')
+        cy.get('.blog').eq(2).should('contain', 'Some blog')
+        cy.get('.blog').eq(3).should('contain', 'Other blog')
       })
     })
   })

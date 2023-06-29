@@ -79,7 +79,10 @@ const App = () => {
 
   const addLike = async (id, blog) => {
     const res = await blogService.save(id, blog)
-    setBlogs(blogs.map(blog => blog !== res ? blog : res))
+    setBlogs(blogs
+      .map(blog => blog !== res ? blog : res)
+      .sort((a,b) => b.likes - a.likes)
+    )
   }
 
   const removeBlog = async id => {
