@@ -31,9 +31,11 @@ const reducer = (state = initialState, action) => {
         votes: anecdote.votes + 1
       }
 
-      return state.map(a => 
-        a.id !== id ? a : votedAnecdote
-      )
+      return state
+        .map(a => a.id !== id ? a : votedAnecdote)
+        .sort((a,b) => b.votes - a.votes)
+      case 'ADD_NEW':
+        return [...state, action.payload]
     default: return state
   }
 }
@@ -42,6 +44,17 @@ export const addVote = (id) => {
   return {
     type: 'ADD_LIKE',
     payload: { id }
+  }
+}
+
+export const addAnecdote = (anecdote) => {
+  return {
+    type: 'ADD_NEW',
+    payload: {
+      content: anecdote,
+      id: getId(),
+      votes: 0
+    }
   }
 }
 
