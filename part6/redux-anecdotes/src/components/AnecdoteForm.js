@@ -6,7 +6,6 @@ const AnecdoteForm = () => {
 
   const add = (ev) => {
     ev.preventDefault()
-    console.log(ev)
     const anecdote = ev.target.anecdote.value
     ev.target.anecdote.value = ''
     dispatch(addAnecdote(anecdote))

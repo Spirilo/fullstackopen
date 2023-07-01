@@ -18,8 +18,11 @@ const Anecdote = ({ anecdote, addLike }) => {
 
 const AnecdoteList = () => {
   const anecdotes = useSelector(state =>
-     state.anecdotes.filter(s => 
-      s.content.toLowerCase().includes(state.filter.toLowerCase())))
+     state.anecdotes
+     .filter(s => 
+       s.content.toLowerCase().includes(state.filter.toLowerCase())
+     ))
+
   const dispatch = useDispatch()
 
   const vote = (id) => {
