@@ -34,6 +34,16 @@
       "content": "Tämä tallentuu db.jsoniin",
       "votes": 0,
       "id": "rWAZ4T_"
+    },
+    {
+      "content": "Vielä yksi testi",
+      "votes": 0,
+      "id": "rNho8lA"
+    },
+    {
+      "content": "Redux thunk works",
+      "votes": 0,
+      "id": "zYRCvc-"
     }
   ]
 }
