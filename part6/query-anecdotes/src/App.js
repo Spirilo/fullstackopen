@@ -3,20 +3,22 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import axios from 'axios'
 import { getAnecdotes, updateAnecdote } from './requests'
+import { useNotificationDispatch } from './NotificationContext'
 
 const App = () => {
   const queryClient = useQueryClient()
+  const dispatch = useNotificationDispatch()
 
   const updateAnecdoteMutation = useMutation(updateAnecdote, {
-    onSuccess: () => {
+    onSuccess: (anecdote) => {
       queryClient.invalidateQueries('anecdotes')
+      dispatch(`anecdote '${anecdote.content}' voted`)
     }
   })
 
   const handleVote = (anecdote) => {
     console.log('vote')
     updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes + 1})
-    
   }
 
   const result = useQuery('anecdotes', getAnecdotes, {retry: 1})

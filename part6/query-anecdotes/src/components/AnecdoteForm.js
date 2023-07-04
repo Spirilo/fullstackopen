@@ -1,12 +1,18 @@
 import { useMutation, useQueryClient } from "react-query"
 import { createAnecdote } from "../requests"
+import { useNotificationDispatch } from "../NotificationContext"
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
+  const dispatch = useNotificationDispatch()
 
   const newAnecdoteMutation = useMutation(createAnecdote, {
-    onSuccess: () => {
+    onSuccess: (anecdote) => {
       queryClient.invalidateQueries('anecdotes')
+      dispatch(`Added a new anecdote '${anecdote.content}'`)
+    },
+    onError: () => {
+      dispatch('Anecdote is too short, must be at least 5 characters')
     }
   })
 
