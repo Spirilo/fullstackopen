@@ -5,7 +5,7 @@ module.exports = {
     'jest/globals': true,
     'cypress/globals': true,
   },
-  extends: ['eslint:recommended', 'plugin:react/recommended'],
+  extends: ['plugin:react/recommended', 'prettier'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -16,7 +16,7 @@ module.exports = {
   plugins: ['react', 'jest', 'cypress'],
   rules: {
     indent: ['error', 2],
-    'linebreak-style': ['error', 'windows'],
+    "linebreak-style": ['error', 'windows'],
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
     eqeqeq: 'error',
@@ -25,6 +25,7 @@ module.exports = {
     'no-console': 0,
     'react/prop-types': 0,
     'react/react-in-jsx-scope': 'off',
+    'no-unused-vars': 'off',
   },
   settings: {
     react: {
