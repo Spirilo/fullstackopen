@@ -19,12 +19,11 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       const data = await blogService.getAll()
-      const sorted = data.sort((a,b) => b.likes - a.likes)
+      const sorted = data.sort((a, b) => b.likes - a.likes)
       setBlogs(sorted)
     }
     getData()
   }, [])
-
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedUser')
@@ -60,7 +59,7 @@ const App = () => {
     window.localStorage.clear()
   }
 
-  const addBlog = async blog => {
+  const addBlog = async (blog) => {
     blogRef.current.toggleVisibility()
     try {
       const added = await blogService.create(blog)
@@ -79,66 +78,72 @@ const App = () => {
 
   const addLike = async (id, blog) => {
     const res = await blogService.save(id, blog)
-    setBlogs(blogs
-      .map(blog => blog !== res ? blog : res)
-      .sort((a,b) => b.likes - a.likes)
+    setBlogs(
+      blogs
+        .map((blog) => (blog !== res ? blog : res))
+        .sort((a, b) => b.likes - a.likes)
     )
   }
 
-  const removeBlog = async id => {
+  const removeBlog = async (id) => {
     await blogService.dlt(id)
-    setBlogs(blogs.filter(blog => blog.id !== id))
+    setBlogs(blogs.filter((blog) => blog.id !== id))
   }
 
   return (
     <div>
-      {!user &&
-      <>
-        <Notification message={msg} />
-        <h2>log in to application</h2>
-        <p>{msg}</p>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              id='username'
-              type="text"
-              value={username}
-              onChange={ev => setUsername(ev.target.value)} />
-          </div>
-          <div>
-            password
-            <input
-              id='password'
-              type="password"
-              value={password}
-              onChange={ev => setPassword(ev.target.value)} />
-          </div>
-          <button id='login-button' type="submit">login</button>
-        </form>
-      </>
-      }
-      {user &&
-      <>
-        <h4>logged in as {user.username} <button onClick={handleLogout}>logout</button> </h4>
-        <Notification message={msg} />
-        <Togglable buttonLabel='new blog' ref={blogRef}>
-          <BlogForm
-            createBlog={addBlog}
-          />
-        </Togglable>
-        <h2>blogs</h2>
-        {blogs.map(blog =>
-          <Blog
-            key={blog.id}
-            blog={blog}
-            addLike={addLike}
-            removeBlog={removeBlog}
-            user={user.username}
-          />
-        )}
-      </>
-      }
+      {!user && (
+        <>
+          <Notification message={msg} />
+          <h2>log in to application</h2>
+          <p>{msg}</p>
+          <form onSubmit={handleLogin}>
+            <div>
+              username
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(ev) => setUsername(ev.target.value)}
+              />
+            </div>
+            <div>
+              password
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(ev) => setPassword(ev.target.value)}
+              />
+            </div>
+            <button id="login-button" type="submit">
+              login
+            </button>
+          </form>
+        </>
+      )}
+      {user && (
+        <>
+          <h4>
+            logged in as {user.username}{' '}
+            <button onClick={handleLogout}>logout</button>{' '}
+          </h4>
+          <Notification message={msg} />
+          <Togglable buttonLabel="new blog" ref={blogRef}>
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
+          <h2>blogs</h2>
+          {blogs.map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              addLike={addLike}
+              removeBlog={removeBlog}
+              user={user.username}
+            />
+          ))}
+        </>
+      )}
     </div>
   )
 }

@@ -11,13 +11,14 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
   const like = () => {
     const updatedBlog = {
       ...blog,
-      likes: blog.likes += 1
+      likes: (blog.likes += 1),
     }
     addLike(blog.id, updatedBlog)
   }
 
   const remove = () => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) removeBlog(blog.id)
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`))
+      removeBlog(blog.id)
   }
 
   const blogStyle = {
@@ -25,27 +26,31 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
   }
 
-  return(
-    <div style={blogStyle} className='blog'>
-      {!showInfo &&
+  return (
+    <div style={blogStyle} className="blog">
+      {!showInfo && (
         <div>
           {blog.title} {blog.author} <button onClick={toggle}>view</button>
         </div>
-      }
-      {showInfo &&
-        <div className='blog-all'>
+      )}
+      {showInfo && (
+        <div className="blog-all">
           {blog.title} {blog.author} <button onClick={toggle}>hide</button>
           <p>{blog.url}</p>
-          <p>likes {blog.likes} <button onClick={like}>like</button></p>
+          <p>
+            likes {blog.likes} <button onClick={like}>like</button>
+          </p>
           <p>{blog.user.username}</p>
-          {blog.user.username === user ?
+          {blog.user.username === user ? (
             <button onClick={remove}>remove</button>
-            : ''}
+          ) : (
+            ''
+          )}
         </div>
-      }
+      )}
     </div>
   )
 }

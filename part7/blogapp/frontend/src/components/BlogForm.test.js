@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event'
 import BlogForm from './BlogForm'
 
 describe('BlogForm tests', () => {
-
   test('function from props is called with right data', async () => {
     const createBlog = jest.fn()
     const { container } = render(<BlogForm createBlog={createBlog} />)

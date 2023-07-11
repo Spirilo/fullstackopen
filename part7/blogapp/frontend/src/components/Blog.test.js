@@ -15,15 +15,14 @@ describe('Blog tests', () => {
     likes: '20',
     user: {
       id: 1234,
-      username: 'TestUser'
-    }
+      username: 'TestUser',
+    },
   }
   beforeEach(() => {
     container = render(<Blog blog={blog} addLike={mockHandler} />).container
   })
 
   test('renders title initially, but not url and likes', () => {
-
     const div = container.querySelector('.blog')
     expect(div).toHaveTextContent('TestBlog')
     expect(div).not.toHaveTextContent('testing@test.fi')
@@ -31,7 +30,6 @@ describe('Blog tests', () => {
   })
 
   test('after button click, url, like and user are shown', async () => {
-
     const user = userEvent.setup()
     const button = screen.getByText('view')
     await user.click(button)
@@ -53,5 +51,4 @@ describe('Blog tests', () => {
 
     expect(mockHandler.mock.calls).toHaveLength(2)
   })
-
 })
