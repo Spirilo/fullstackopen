@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteBlog, updateBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog }) => {
   const [showInfo, setShowInfo] = useState(false)
   const dispatch = useDispatch()
+
+  const user = useSelector(state => state.user)
 
   const toggle = () => {
     setShowInfo(!showInfo)
@@ -42,7 +44,7 @@ const Blog = ({ blog, user }) => {
             likes {blog.likes} <button onClick={like}>like</button>
           </p>
           <p>{blog.user.username}</p>
-          {blog.user.username === 'test' ? (
+          {blog.user.username === user.username ? (
             <button onClick={remove}>remove</button>
           ) : (
             ''
