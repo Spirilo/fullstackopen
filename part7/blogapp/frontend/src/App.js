@@ -1,25 +1,27 @@
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Routes, Route } from 'react-router-dom'
 
 import blogService from './services/blogs'
 
-import BlogForm from './components/BlogForm'
-import Notification from './components/Notification'
-import Togglable from './components/Togglable'
-import BlogList from './components/BlogList'
-
-import { setNotification } from './reducers/notificationReducer'
-import { createBlog, initializeBlogs } from './reducers/blogReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
+import { initilizeUsers } from './reducers/usersReducer'
+
+import Notification from './components/Notification'
+import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
+import Menu from './components/Menu'
+import Header from './components/Header'
+import Users from './components/Users'
 
 const App = () => {
-  const blogRef = useRef()
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initilizeUsers())
   }, [dispatch])
 
   useEffect(() => {
@@ -31,21 +33,6 @@ const App = () => {
     }
   }, [])
 
-  const handleLogout = () => {
-    dispatch(setUser(null))
-    window.localStorage.clear()
-  }
-
-  const addBlog = async (blog) => {
-    blogRef.current.toggleVisibility()
-    try {
-      dispatch(createBlog(blog))
-      dispatch(setNotification(`a new blog ${blog.title} by ${blog.author} was added!`, 5))
-    } catch (error) {
-      dispatch(setNotification('error adding a new blog', 5))
-    }
-  }
-
   return (
     <div>
       {!user && (
@@ -56,15 +43,13 @@ const App = () => {
       )}
       {user && (
         <>
-          <h4>
-            logged in as {user.username}{' '}
-            <button onClick={handleLogout}>logout</button>{' '}
-          </h4>
           <Notification />
-          <Togglable buttonLabel="new blog" ref={blogRef}>
-            <BlogForm createBlog={addBlog} />
-          </Togglable>
-          <BlogList />
+          <Menu />
+          <Header />
+          <Routes>
+            <Route path='/' element={<BlogList />} />
+            <Route path='/users' element={<Users />} />
+          </Routes>
         </>
       )}
     </div>
