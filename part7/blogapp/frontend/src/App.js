@@ -14,6 +14,7 @@ import LoginForm from './components/LoginForm'
 import Menu from './components/Menu'
 import Header from './components/Header'
 import Users from './components/Users'
+import User from './components/User'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -49,6 +50,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={<BlogList />} />
             <Route path='/users' element={<Users />} />
+            <Route path='/users/:id' element={<User />} />
           </Routes>
         </>
       )}
