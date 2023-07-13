@@ -15,4 +15,6 @@ Work is still in progress
 - Part 6
 - [x] All exercises done
 - Part 7
+- [x] All exercises done
+- Part 8
 - [ ] Work in progress
