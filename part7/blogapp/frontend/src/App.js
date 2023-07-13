@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
+import { Container, createTheme, ThemeProvider } from '@mui/material'
 
 import blogService from './services/blogs'
 
@@ -12,7 +13,6 @@ import Notification from './components/Notification'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import Menu from './components/Menu'
-import Header from './components/Header'
 import Users from './components/Users'
 import User from './components/User'
 import Blog from './components/Blog'
@@ -35,27 +35,44 @@ const App = () => {
     }
   }, [])
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#263238'
+      },
+      secondary: {
+        main: '#ffd54f'
+      },
+      red: {
+        main: '#b71c1c'
+      }
+    }
+  })
+
   return (
-    <div>
-      <Notification />
-      {!user && (
-        <>
-          <LoginForm />
-        </>
-      )}
-      {user && (
-        <>
+    <Container>
+      <ThemeProvider theme={theme}>
+        <div>
+          <Notification />
           <Menu />
-          <Header />
-          <Routes>
-            <Route path='/' element={<BlogList />} />
-            <Route path='/users' element={<Users />} />
-            <Route path='/users/:id' element={<User />} />
-            <Route path='/blogs/:id' element={<Blog />} />
-          </Routes>
-        </>
-      )}
-    </div>
+          {!user && (
+            <>
+              <LoginForm />
+            </>
+          )}
+          {user && (
+            <>
+              <Routes>
+                <Route path='/' element={<BlogList />} />
+                <Route path='/users' element={<Users />} />
+                <Route path='/users/:id' element={<User />} />
+                <Route path='/blogs/:id' element={<Blog />} />
+              </Routes>
+            </>
+          )}
+        </div>
+      </ThemeProvider>
+    </Container>
   )
 }
 

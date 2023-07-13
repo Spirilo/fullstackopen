@@ -6,6 +6,7 @@ import { useRef } from 'react'
 import { setNotification } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
 import { Link } from 'react-router-dom'
+import { Table, TableBody, TableRow, TableCell, TableContainer } from '@mui/material'
 
 const BlogList = () => {
   const blogRef = useRef()
@@ -32,19 +33,23 @@ const BlogList = () => {
 
   return (
     <div>
+      <h1>Blogs</h1>
       <Togglable buttonLabel="new blog" ref={blogRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      <h2>blogs</h2>
-      {blogs.map((blog) => (
-        <div style={blogStyle} key={blog.id}>
-          <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
-        </div>
-        //<Blog
-        //key={blog.id}
-        //blog={blog}
-        ///>
-      ))}
+      <TableContainer>
+        <Table padding='normal'>
+          <TableBody>
+            {blogs.map((blog) => (
+              <TableRow key={blog.id} selected='true'>
+                <TableCell>
+                  <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 }
