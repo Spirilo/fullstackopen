@@ -10,14 +10,16 @@ const Users = () => {
     <div>
       <h2>Users</h2>
       <table>
-        <tbody>
+        <thead>
           <tr>
             <th>Name</th>
             <th>Blogs created</th>
           </tr>
+        </thead>
+        <tbody>
           {users.map(u => (
             <tr key={u.id}>
-              <Link to={`/users/${u.id}`}>{u.name}</Link>
+              <td><Link to={`/users/${u.id}`}>{u.name}</Link></td>
               <td>{u.blogs.length}</td>
             </tr>
           ))}

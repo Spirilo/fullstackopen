@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 
@@ -15,6 +15,7 @@ import Menu from './components/Menu'
 import Header from './components/Header'
 import Users from './components/Users'
 import User from './components/User'
+import Blog from './components/Blog'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -36,21 +37,21 @@ const App = () => {
 
   return (
     <div>
+      <Notification />
       {!user && (
         <>
-          <Notification />
           <LoginForm />
         </>
       )}
       {user && (
         <>
-          <Notification />
           <Menu />
           <Header />
           <Routes>
             <Route path='/' element={<BlogList />} />
             <Route path='/users' element={<Users />} />
             <Route path='/users/:id' element={<User />} />
+            <Route path='/blogs/:id' element={<Blog />} />
           </Routes>
         </>
       )}

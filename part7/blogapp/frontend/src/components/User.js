@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 const User = () => {
   const id = useParams().id
   const user = useSelector(state => state.users.find(u => u.id === id))
-  console.log(user)
 
   if(!user) return null
 

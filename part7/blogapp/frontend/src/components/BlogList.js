@@ -5,6 +5,7 @@ import BlogForm from './BlogForm'
 import { useRef } from 'react'
 import { setNotification } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
+import { Link } from 'react-router-dom'
 
 const BlogList = () => {
   const blogRef = useRef()
@@ -21,6 +22,14 @@ const BlogList = () => {
     }
   }
 
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5,
+  }
+
   return (
     <div>
       <Togglable buttonLabel="new blog" ref={blogRef}>
@@ -28,11 +37,13 @@ const BlogList = () => {
       </Togglable>
       <h2>blogs</h2>
       {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          //user={user.username}
-        />
+        <div style={blogStyle} key={blog.id}>
+          <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
+        </div>
+        //<Blog
+        //key={blog.id}
+        //blog={blog}
+        ///>
       ))}
     </div>
   )
