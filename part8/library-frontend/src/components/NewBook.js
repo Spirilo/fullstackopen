@@ -15,8 +15,6 @@ const NewBook = (props) => {
     return null
   }
 
-  console.log(typeof(published))
-
   const submit = async (event) => {
     event.preventDefault()
 
