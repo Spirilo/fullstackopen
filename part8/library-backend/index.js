@@ -1,12 +1,11 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
-const { v1: uuid} = require('uuid')
 
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 const Author = require('./models/author')
 const Book = require('./models/book')
-const author = require('./models/author')
+const { GraphQLError } = require('graphql')
 
 require('dotenv').config()
 
@@ -69,7 +68,6 @@ const resolvers = {
       else result = await Book.find({}).populate('author')
       
       if(args.author) result = result.filter(b => b.author.name === args.author)
-      console.log(result)
       return result
     },
     allAuthors: async () => Author.find({})
@@ -86,13 +84,33 @@ const resolvers = {
       const author = await Author.findOne({name: args.author})
       if(!author) {
         const newAuthor = new Author({name: args.author})
-        await newAuthor.save()
+        try {
+          await newAuthor.save()
+        } catch (error) {
+          throw new GraphQLError('Saving book failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.name,
+              error
+            }
+          })
+        }
         book = new Book({...args, author: newAuthor})
       } else {
         book = new Book({...args, author: author})
       }
 
-      await book.save()
+      try {
+        await book.save()
+      } catch (error) {
+        throw new GraphQLError('Saving book failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error
+          }
+        })
+      }
       return book
     },
     editAuthor: async (root, args) => {
