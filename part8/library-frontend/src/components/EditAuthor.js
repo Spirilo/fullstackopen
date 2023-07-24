@@ -8,8 +8,6 @@ const EditAuthor = ({ authors }) => {
 
   const [ editAuthor ] = useMutation(EDIT_AUTHOR)
 
-  console.log(name)
-
   const submit = async (event) => {
     event.preventDefault()
 
