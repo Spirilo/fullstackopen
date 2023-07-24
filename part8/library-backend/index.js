@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 const Author = require('./models/author')
 const Book = require('./models/book')
+const author = require('./models/author')
 
 require('dotenv').config()
 
@@ -63,18 +64,21 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      //let result
-      //if(args.genre) result = books.filter(b => b.genres.includes(args.genre))
-      //else result = books
+      let result
+      if(args.genre) result = await Book.find({ genres: args.genre }).populate('author')
+      else result = await Book.find({}).populate('author')
       
-      //if(args.author) result = result.filter(b => b.author === args.author)
-      
-      return Book.find({})
+      if(args.author) result = result.filter(b => b.author.name === args.author)
+      console.log(result)
+      return result
     },
     allAuthors: async () => Author.find({})
   },
   Author: {
-    bookCount: ({ name }) => books.filter(b => b.author === name).length
+    bookCount: async ({ name }) => {
+      const author = await Author.findOne({name: name})
+      return Book.countDocuments({author: author})
+    }
   },
   Mutation: {
     addBook: async (root, args) => {
@@ -91,12 +95,12 @@ const resolvers = {
       await book.save()
       return book
     },
-    editAuthor: (root, args) => {
-      const author = authors.find(a => a.name === args.name)
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({name: args.name})
       if(!author) return null
 
-      const updatedAuthor = { ...author, born: args.setBornTo}
-      authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
+      const updatedAuthor = { ...author._doc, born: args.setBornTo}
+      await Author.findByIdAndUpdate(author, updatedAuthor, {new: true})
       return updatedAuthor
     }
   }
