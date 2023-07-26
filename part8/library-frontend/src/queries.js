@@ -20,8 +20,15 @@ export const ALL_BOOKS = gql`
       }
       title
       published
+      genres
       id
     }
+  }
+`
+
+export const ALL_GENRES = gql`
+  query {
+    allGenres
   }
 `
 

@@ -54,6 +54,7 @@ const typeDefs = `
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
     me: User
+    allGenres: [String!]!
   }
 
   type Mutation {
@@ -93,6 +94,16 @@ const resolvers = {
     allAuthors: async () => (await Author.find({})),
     me: (root, args, context) => {
       return context.currentUser
+    },
+    allGenres: async () => {
+      let result = []
+      const books = await Book.find({})
+      books.filter(b => {
+        b.genres.filter(g => {
+          if(!result.includes(g)) result = result.concat(g)
+        })
+      })
+      return result
     }
   },
   Author: {

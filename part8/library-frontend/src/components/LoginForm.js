@@ -8,7 +8,6 @@ const LoginForm = ({ show , setToken }) => {
   const [password, setPassword] = useState('')
 
   const [ login, result ] = useMutation(LOGIN)
-  console.log(result)
 
   useEffect(() => {
     if(result.data) {
