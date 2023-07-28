@@ -18,7 +18,7 @@ const resolvers = {
       if(args.author) result = result.filter(b => b.author.name === args.author)
       return result
     },
-    allAuthors: async () => (await Author.find({})),
+    allAuthors: async () => await Author.find({}),
     me: (root, args, context) => {
       return context.currentUser
     },

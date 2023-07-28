@@ -15,7 +15,6 @@ const NewBook = (props) => {
     onData: ({ data }) => {
       const book = data.data.bookAdded
       window.alert(`Book ${book.title} by ${book.author.name} was added!`)
-      
     }
   })
 
