@@ -5,7 +5,8 @@ import { useQuery } from "@apollo/client"
 const Books = (props) => {
   const [genre, setGenre] = useState(null)
   const result = useQuery(ALL_BOOKS, {
-    variables: { genre: genre }
+    variables: { genre: genre },
+    pollInterval: 2000
   })
   const genres = useQuery(ALL_GENRES)
 

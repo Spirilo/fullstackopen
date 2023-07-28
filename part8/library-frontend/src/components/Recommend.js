@@ -12,12 +12,12 @@ const Recommend = (props) => {
   }, [])
 
   const books = useQuery(ALL_BOOKS, {
-    variables: { genre: genre},
+    variables: { genre: genre },
   })
 
-  const recommended = books.data.allBooks
-
   if(!props.show) return null
+
+  const recommended = books.data.allBooks
 
   return(
     <div>
