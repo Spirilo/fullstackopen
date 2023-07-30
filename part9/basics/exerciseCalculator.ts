@@ -8,15 +8,23 @@ interface Result {
   average: number
 };
 
-const calculateExercises = (exercises: number[]) : Result => {
-  const periodLength = exercises.length;
-  const trainingDays = exercises.filter(d => d !== 0).length;
-  const target = 2;
-  
-  const sum = exercises.reduce((a, c) => {
+const calculateExercises = (args: string[]) : Result => {
+  if (args.length < 4) throw new Error('Not enough arguments!');
+
+  const daysWithTarget = args.slice(2)
+  if (!daysWithTarget.every(e => Number(e))) throw new Error('User input wrong!')
+  console.log(daysWithTarget)
+  const target = Number(daysWithTarget[0])
+
+  const days = daysWithTarget.slice(1).map(d => Number(d))
+
+  const periodLength = days.length;
+  const trainingDays = days.filter(d => d !== 0).length;
+
+  const sum = days.reduce((a, c) => {
     return a + c;
   }, 0)
-  const average = sum / exercises.length;
+  const average = sum / days.length;
   const success = average >= target ? true : false;
 
   let rating;
@@ -30,6 +38,10 @@ const calculateExercises = (exercises: number[]) : Result => {
   }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1]));
-console.log(calculateExercises([3, 4, 2, 4.5, 0, 3, 1]));
-console.log(calculateExercises([3, 0, 0, 0, 0, 0, 1]));
+try {
+  console.log(calculateExercises(process.argv))
+} catch (error) {
+  let errorMessage = 'Something went wrong';
+  if (error instanceof Error) errorMessage = 'Error: ' + error.message
+  console.log(errorMessage)
+}

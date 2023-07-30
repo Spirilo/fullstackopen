@@ -9,9 +9,17 @@ const Bmi = [
   'Obese (class 3)',
 ];
 
-const calculateBmi = (height: number, weight: number) : string => {
+const calculateBmi = (args: string[]) : string => {
+  if (args.length < 4) throw new Error('Not enough arguments!');
+  if (args.length > 4) throw new Error('Too many arguments!');
+
+  const weight = Number(args[2]);
+  const height = Number(args[3]);
+
+  if (isNaN(weight) || isNaN(height)) throw new Error('User input is wrong!');
+
+
   const bmi = weight / (height * 2) * 100;
-  console.log(bmi);
   if (bmi < 16) return Bmi[0];
   if (bmi <= 16.9) return Bmi[1];
   if (bmi <= 18.4) return Bmi[2];
@@ -22,7 +30,10 @@ const calculateBmi = (height: number, weight: number) : string => {
   return Bmi[7];
 }
 
-console.log(calculateBmi(180, 74));
-console.log(calculateBmi(160, 55));
-console.log(calculateBmi(178, 82));
-console.log(calculateBmi(180, 200));
+try {
+  console.log(calculateBmi(process.argv));
+} catch (error: unknown) {
+  let errorMessage = 'Something went wrong!';
+  if (error instanceof Error) errorMessage = 'Error: ' + error.message;
+  console.log(errorMessage);
+}
