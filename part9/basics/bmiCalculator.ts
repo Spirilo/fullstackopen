@@ -28,7 +28,7 @@ export const calculateBmi = (args: string[]) : string => {
   if (bmi <= 34.9) return Bmi[5];
   if (bmi < 39.9) return Bmi[6];
   return Bmi[7];
-}
+};
 
 try {
   console.log(calculateBmi(process.argv));
