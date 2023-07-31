@@ -8,11 +8,12 @@ interface Result {
   average: number
 }
 
-const calculateExercises = (args: string[]) : Result => {
+export const calculateExercises = (args: string[]) : Result => {
   if (args.length < 4) throw new Error('Not enough arguments!');
 
   const daysWithTarget = args.slice(2);
-  if (!daysWithTarget.every(e => Number(e))) throw new Error('User input wrong!');
+
+  if (!daysWithTarget.every(e => (!isNaN(Number(e))))) throw new Error('User input wrong!');
 
   const target = Number(daysWithTarget[0]);
 
