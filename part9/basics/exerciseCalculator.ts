@@ -13,7 +13,7 @@ const calculateExercises = (args: string[]) : Result => {
 
   const daysWithTarget = args.slice(2)
   if (!daysWithTarget.every(e => Number(e))) throw new Error('User input wrong!')
-  console.log(daysWithTarget)
+
   const target = Number(daysWithTarget[0])
 
   const days = daysWithTarget.slice(1).map(d => Number(d))
