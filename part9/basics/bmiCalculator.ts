@@ -9,7 +9,7 @@ const Bmi = [
   'Obese (class 3)',
 ];
 
-const calculateBmi = (args: string[]) : string => {
+export const calculateBmi = (args: string[]) : string => {
   if (args.length < 4) throw new Error('Not enough arguments!');
   if (args.length > 4) throw new Error('Too many arguments!');
 
