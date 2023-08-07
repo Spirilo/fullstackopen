@@ -7,13 +7,15 @@ import { Patient } from "../../types";
 import patientService from '../../services/patients';
 
 const PatientInfo = () => {
-  const id = useParams().id;
+  const { id } = useParams();
   const [patient, setPatient] = useState<Patient>()
   
   useEffect(() => {
     const fetchPatient = async () => {
-      const patient = await patientService.getById(id);
-      setPatient(patient);
+      if (id !== undefined) {
+        const patient = await patientService.getById(id);
+        setPatient(patient);
+      }
     };
     void fetchPatient();
   })

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Link, Routes, useMatch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import { Button, Divider, Container, Typography } from '@mui/material';
 
 import { apiBaseUrl } from "./constants";
@@ -12,11 +12,6 @@ import PatientInfo from "./components/PatientInfo";
 
 const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
-
-  const match = useMatch('/patients/:id');
-  const patient = match
-    ? patients.find(p => p.id === match.params.id)
-    : undefined
 
   useEffect(() => {
     void axios.get<void>(`${apiBaseUrl}/ping`);
