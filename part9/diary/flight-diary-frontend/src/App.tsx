@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { createDiary, getAllDiaries } from './services/diary';
 import { Diary } from './types';
 import Diaries from './components/Diaries';
-import { useField } from './utils';
+import { isAnDiary, useField } from './utils';
+import ErrorMsg from './components/ErrorMsg';
+
 
 function App() {
   const [diaries, setDiaries] = useState<Diary[]>([]);
@@ -10,8 +12,8 @@ function App() {
   const visibility = useField('text');
   const weather = useField('text');
   const comment = useField('text');
+  const error = useField('text')
 
-  console.log(diaries)
 
   useEffect(() => {
     getAllDiaries().then(data => {
@@ -19,20 +21,35 @@ function App() {
     })
   }, [])
 
-  const addDiary = (event: React.SyntheticEvent) => {
+  const addDiary = async (event: React.SyntheticEvent) => {
     event.preventDefault()
-    createDiary({
+    const diary = await createDiary({
       date: date.value,
       visibility: visibility.value,
       weather: weather.value,
       comment: comment.value
-    }).then(res => setDiaries(diaries.concat(res)))
+    })
+    if(isAnDiary(diary)) {
+      setDiaries(diaries.concat(diary))
+    } else {
+      error.setValue(diary?.data)
+      setTimeout(() => {
+        error.setValue('')
+      }, 5000);
+    }
+    
+    
+    date.setValue('')
+    visibility.setValue('')
+    weather.setValue('')
+    comment.setValue('')
   }
 
   return (
     <div>
       <div>
       <h2>Add new entry</h2>
+      <ErrorMsg msg={error.value}/>
       <form onSubmit={addDiary}>
         <div>
           date <input {...date} />
