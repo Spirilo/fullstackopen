@@ -5,7 +5,7 @@ const Diaries = ({ diaries }: { diaries: Diary[] }) => {
   return (
     <div>
       {diaries.map(d => (
-        <div>
+        <div key={d.id}>
           <p><b>{d.date}</b></p>
           <p>visibility: {d.visibility}</p>
           <p>weather: {d.weather}</p>
