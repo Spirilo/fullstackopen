@@ -8,12 +8,11 @@ import ErrorMsg from './components/ErrorMsg';
 
 function App() {
   const [diaries, setDiaries] = useState<Diary[]>([]);
-  const date = useField('text');
+  const date = useField('date');
   const visibility = useField('text');
   const weather = useField('text');
   const comment = useField('text');
   const error = useField('text')
-
 
   useEffect(() => {
     getAllDiaries().then(data => {
@@ -37,8 +36,6 @@ function App() {
         error.setValue('')
       }, 5000);
     }
-    
-    
     date.setValue('')
     visibility.setValue('')
     weather.setValue('')
@@ -55,10 +52,18 @@ function App() {
           date <input {...date} />
         </div>
         <div>
-          visibility <input {...visibility} />
+          visibility 
+          good <input type='radio' name='visibility' onChange={() => visibility.setValue('good')}/>
+          ok <input type='radio' name='visibility' onChange={() => visibility.setValue('ok')} />
+          poor <input type='radio' name='visibility' onChange={() => visibility.setValue('poor')} />
         </div>
         <div>
-          weather <input {...weather} />
+          weather 
+          sunny <input type='radio' name='weather' onChange={() => weather.setValue('sunny')} />
+          rainy <input type='radio' name='weather' onChange={() => weather.setValue('rainy')} />
+          cloudy <input type='radio' name='weather' onChange={() => weather.setValue('cloudy')} />
+          stormy <input type='radio' name='weather' onChange={() => weather.setValue('stormy')} />
+          windy <input type='radio' name='weather' onChange={() => weather.setValue('windy')} />
         </div>
         <div>
           comment <input {...comment} />
