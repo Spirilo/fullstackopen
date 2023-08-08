@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 
 import { Female, Male } from '@mui/icons-material';
 
-import { Patient } from "../../types";
+import { Diagnosis, Patient } from "../../types";
 import patientService from '../../services/patients';
 import EntryInfo from "./EntryInfo";
 
-const PatientInfo = () => {
+const PatientInfo = ({ diagnoses }: { diagnoses: Diagnosis[] }) => {
   const { id } = useParams();
   const [patient, setPatient] = useState<Patient>()
   
@@ -20,7 +20,6 @@ const PatientInfo = () => {
     };
     void fetchPatient();
   }, [])
-  console.log(patient?.entries);
 
   return (
     <div>
@@ -32,7 +31,7 @@ const PatientInfo = () => {
       <p>occupation: {patient?.occupation}</p>
       <h3>entries</h3>
       {patient?.entries.map(e => (
-        <EntryInfo key={e.id} entry={e} />
+        <EntryInfo key={e.id} entry={e} diagnoses={diagnoses} />
       ))}
     </div>
   )
