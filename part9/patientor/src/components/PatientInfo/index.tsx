@@ -5,6 +5,7 @@ import { Female, Male } from '@mui/icons-material';
 
 import { Patient } from "../../types";
 import patientService from '../../services/patients';
+import EntryInfo from "./EntryInfo";
 
 const PatientInfo = () => {
   const { id } = useParams();
@@ -18,7 +19,8 @@ const PatientInfo = () => {
       }
     };
     void fetchPatient();
-  })
+  }, [])
+  console.log(patient?.entries);
 
   return (
     <div>
@@ -28,6 +30,10 @@ const PatientInfo = () => {
       </h2>
       <p>ssn: {patient?.ssn}</p>
       <p>occupation: {patient?.occupation}</p>
+      <h3>entries</h3>
+      {patient?.entries.map(e => (
+        <EntryInfo key={e.id} entry={e} />
+      ))}
     </div>
   )
 };
