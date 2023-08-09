@@ -1,4 +1,12 @@
-import { Gender, NewPatient } from "./types";
+import { Gender,
+  NewPatient,
+  Diagnosis,
+  HealthCheckRating, 
+  SickLeave, 
+  Discharge, 
+  EntryWithoutId, 
+  Type 
+} from "./types";
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -78,3 +86,138 @@ export const toNewPatient = (object: unknown): NewPatient => {
   
   throw new Error('Incorrect data: Some fields are missing');
 };
+
+const parseDescription = (description: unknown): string => {
+  if(!description || !isString(description)) {
+    throw new Error('Incorrect data or missing description');
+  };
+
+  return description;
+};
+
+const parseSpecialist = (specialist: unknown): string => {
+  if(!specialist || !isString(specialist)) {
+    throw new Error('Incorrect data or missing specialist');
+  };
+
+  return specialist;
+};
+
+const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> =>  {
+  if (!object || typeof object !== 'object' || !('diagnosisCodes' in object)) {
+    // we will just trust the data to be in correct form
+    return [] as Array<Diagnosis['code']>;
+  }
+
+  return object.diagnosisCodes as Array<Diagnosis['code']>;
+};
+
+const isHealtCheckRating = (param: any): param is HealthCheckRating => {
+  return Object.values(HealthCheckRating).includes(param);
+};
+
+const isSickLeave = (sickLeave: any): boolean => {
+  return Boolean(sickLeave.startDate && sickLeave.endDate);
+};
+
+const isDischarge = (discharge: any): boolean => {
+  return Boolean(discharge.date && discharge.criteria);
+};
+
+const isType = (type: any): type is Type => {
+  return Object.values(Type).includes(type);
+};
+
+const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {
+  if(!healthCheckRating || !isHealtCheckRating(healthCheckRating)) {
+    throw new Error('Incorrect data or missing rating');
+  };
+
+  return healthCheckRating;
+};
+
+const parseSickLeave = (sickLeave: unknown): SickLeave | undefined => {
+  if(!sickLeave) return undefined;
+
+  if(!isSickLeave(sickLeave)) {
+    throw new Error('Incorrect sickleave');
+  };
+
+  return sickLeave as SickLeave;
+};
+
+const parseDischarge = (discharge: unknown): Discharge => {
+  if(!discharge || !isDischarge) {
+    throw new Error('Incorrect data or missing discharge');
+  };
+
+  return discharge as Discharge;
+};
+
+const parseType = (type: unknown): Type => {
+  if(!type || !isType(type)) {
+    throw new Error('Incorrect type');
+  }
+  
+  return type;
+}
+const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};
+
+export const toNewEntry = (object: any): EntryWithoutId => {
+  if(!object || typeof object !== 'object') {
+    throw new Error('Incorrect or missing data');
+  };
+  if('type' in object && 'description' in object && 'date' in object && 'specialist' in object) {
+  const type = parseType(object.type);
+  let newEntry: EntryWithoutId
+    switch(type) {
+      case Type.HealthCheck:
+        if('healthCheckRating' in object) {
+          newEntry = {
+            date: parseDate(object.date),
+            description: parseDescription(object.description),
+            specialist: parseSpecialist(object.specialist),
+            healthCheckRating: parseHealthCheckRating(object.healthCheckRating),
+            diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
+            type,
+          }
+          return newEntry;
+        }
+        break;
+      case Type.Hospital:
+        if('discharge' in object) {
+          newEntry = {
+            date: parseDate(object.date),
+            description: parseDescription(object.description),
+            specialist: parseSpecialist(object.specialist),
+            discharge: parseDischarge(object.discharge),
+            diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
+            type,
+          }
+          return newEntry;
+        }
+        break;
+      case Type.OccupationalHealthcare:
+        if('employerName' in object) {
+          newEntry = {
+            date: parseDate(object.date),
+            description: parseDescription(object.description),
+            specialist: parseSpecialist(object.specialist),
+            employerName: parseName(object.employerName),
+            sickLeave: parseSickLeave(object.sickLeave),
+            diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
+            type,
+          }
+          return newEntry;
+        }
+        break;
+      default:
+        return assertNever(type);
+    }
+  }
+  throw new Error('Something went wrong');
+}
