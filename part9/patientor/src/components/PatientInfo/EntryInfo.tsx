@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { Diagnosis, Entry, HealthCheckEntry, HospitalEntry, OccupationalHealthcareEntry } from "../../types";
+import { Diagnosis, Entry, HealthCheckEntry, HospitalEntry, OccupationalHealthcareEntry, Type } from "../../types";
 import WorkIcon from '@mui/icons-material/Work';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
@@ -67,16 +67,16 @@ const EntryInfo: React.FC<{ entry : Entry, diagnoses: Diagnosis[] }> = ({ entry,
   }
   
   switch (entry.type) {
-    case "Hospital":
+    case Type.Hospital:
       return <HospitalEntryComp
         id={entry.id}
         discharge={entry.discharge}
         description={entry.description}
         date={entry.date}
         specialist={entry.specialist}
-        type={"Hospital"}       
+        type={Type.Hospital}       
       />
-    case "OccupationalHealthcare":
+    case Type.OccupationalHealthcare:
       return <OccupationalHealthcareEntryComp
         id={entry.id}
         employerName={entry.employerName}
@@ -84,16 +84,16 @@ const EntryInfo: React.FC<{ entry : Entry, diagnoses: Diagnosis[] }> = ({ entry,
         description={entry.description}
         date={entry.date}
         specialist={entry.specialist}
-        type={"OccupationalHealthcare"}       
+        type={Type.OccupationalHealthcare}       
     />
-    case "HealthCheck":
+    case Type.HealthCheck:
       return <HealthCheckEntryComp
         id={entry.id}
         description={entry.description}
         date={entry.date}
         specialist={entry.specialist}
         healthCheckRating={entry.healthCheckRating}
-        type={"HealthCheck"}       
+        type={Type.HealthCheck}       
     />
     default:
       return assertNever(entry);
